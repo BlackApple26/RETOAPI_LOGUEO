@@ -4,7 +4,7 @@ document.getElementById("login-form").addEventListener("submit",async (e)=>{
   e.preventDefault();
   const user = e.target.children.user.value;
   const password = e.target.children.password.value;
-  const res = await fetch("http://localhost:4005/api/login",{
+  const res = await fetch("https://retoapi-logueo.onrender.com",{
     method:"POST",
     headers:{
       "Content-Type":"application/json"
