@@ -7,6 +7,8 @@ import {methods as authentication} from "./controllers/authentication.controller
 import {methods as authorization} from "./middlewares/authorization.js";
 import { connectDB,sequelize } from './config/db.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import dotenv from 'dotenv';
+dotenv.config();
 
 //Server
 const app = express();

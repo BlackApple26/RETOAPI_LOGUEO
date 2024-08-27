@@ -3,9 +3,16 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const sequelize = new Sequelize('useradmin', 'root', '', {
+/*const sequelize = new Sequelize('useradmin', 'root', '', {
   host: 'localhost',
   dialect: 'mysql'
+});*/
+
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'mysql',
+  dialectOptions:{
+    connectTimeout: 60000
+  }
 });
 
 const connectDB = async () => {
