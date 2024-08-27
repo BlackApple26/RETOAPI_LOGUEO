@@ -7,7 +7,7 @@ dotenv.config();
   host: 'localhost',
   dialect: 'mysql'
 });*/
-
+console.log('Database URL:', process.env.DATABASE_URL);
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: 'mysql',
   dialectOptions:{
@@ -25,5 +25,4 @@ const connectDB = async () => {
 };
 
 export { sequelize, connectDB };
-console.log('DATABASE_URL:', process.env.DATABASE_URL);
 
