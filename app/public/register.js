@@ -3,7 +3,7 @@ const mensajeError = document.getElementsByClassName("error")[0];
 document.getElementById("register-form").addEventListener("submit",async(e)=>{
   e.preventDefault();
   console.log(e.target.children.user.value)
-  const res = await fetch("https://retoapi-logueo.onrender.com/register",{
+  const res = await fetch("https://retoapi-logueo.onrender.com/api/register",{
     method:"POST",
     headers:{
       "Content-Type" : "application/json"
