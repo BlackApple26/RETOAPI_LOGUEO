@@ -1,6 +1,6 @@
 import jsonwebtoken from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import User from '../models/User.js'; // Importa el modelo User
+import User from '../models/User.js';
 
 dotenv.config();
 
@@ -18,23 +18,43 @@ async function soloPublico(req, res, next) {
 
 async function revisarCookie(req) {
   try {
-    const cookieJWT = req.headers.cookie.split("; ").find(cookie => cookie.startsWith("jwt="))?.slice(4);
-    
-    if (!cookieJWT) return false;
-    
-    const decodificada = jsonwebtoken.verify(cookieJWT, process.env.JWT_SECRET);
-    console.log(decodificada);
-
-    // Busca el usuario en la base de datos
-    const usuarioAResvisar = await User.findOne({ where: { user: decodificada.user } });
-    console.log(usuarioAResvisar);
-
-    if (!usuarioAResvisar) {
+    const cookies = req.headers.cookie;
+    if (!cookies) {
+      console.log('No se encontraron cookies');
       return false;
     }
+
+    const cookieJWT = cookies.split("; ").find(cookie => cookie.startsWith("jwt="));
+    if (!cookieJWT) {
+      console.log('No se encontró la cookie JWT');
+      return false;
+    }
+
+    const token = cookieJWT.slice(4);
+    if (!token) {
+      console.log('Token vacío');
+      return false;
+    }
+
+    const decodificada = jsonwebtoken.verify(token, process.env.JWT_SECRET);
+    console.log('Token decodificado:', decodificada);
+
+    if (!decodificada || !decodificada.user) {
+      console.log('Token inválido o sin usuario');
+      return false;
+    }
+
+    const usuarioARevisar = await User.findOne({ where: { user: decodificada.user } });
+    console.log('Usuario encontrado:', usuarioARevisar);
+
+    if (!usuarioARevisar) {
+      console.log('Usuario no encontrado en la base de datos');
+      return false;
+    }
+
     return true;
   } catch (error) {
-    console.error(error);
+    console.error('Error al revisar la cookie:', error);
     return false;
   }
 }
